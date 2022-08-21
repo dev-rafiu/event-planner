@@ -1,63 +1,60 @@
-/*import React, { Component } from "react";
-import NavBar from "./components/mosh/navbar";
-import Counters from "./components/mosh/counters";
-class App extends Component {
-  state = {
-    counters: [
-      { id: 1, value: 0 },
-      { id: 2, value: 0 },
-      { id: 3, value: 0 },
-    ],
-  };
+import React, { useState } from "react";
+import Header from "./components/Header";
+import EventItem from "./components/EventItem";
+import CreateArea from "./components/CreateArea";
 
-  handleReset = () => {
-    const counters = this.state.counters.map((counter) => {
-      counter.value = 0;
-      return counter;
-    });
-    this.setState({ counters: counters });
-  };
-
-  handleIncrement = (counter) => {
-    const counters = [...this.state.counters];
-    let index = counters.indexOf(counter);
-    counters[index] = { ...counter };
-    counters[index].value += 1;
-    this.setState({ counters: counters });
-  };
-
-  handleDelete = (id) => {
-    const filteredCounts = this.state.counters.filter(
-      (counter) => counter.id !== id
-    );
-    this.setState({ counters: filteredCounts });
-  };
-
-  render() {
-    const totalCounters = this.state.counters.filter(
-      (counter) => counter.value > 0
-    ).length;
-
-    return (
-      <React.Fragment>
-        <NavBar totalCounters={totalCounters} />
-        <Counters
-          handleReset={this.handleReset}
-          handleIncrement={this.handleIncrement}
-          handleDelete={this.handleDelete}
-          counters={this.state.counters}
-        />
-      </React.Fragment>
-    );
-  }
-}
-export default App;*/
-
-// Yu
-import React from "react";
-// import Content from "./components/yu/App";
-import CreateArea from "./components/Event Planner/App";
 function App() {
-  return <CreateArea />;
+  const [eventList, setEventList] = useState([]);
+  const [alert, setAlert] = useState({ show: false, msg: "", type: "" });
+
+  const removeAlert = () => {
+    setTimeout(() => {
+      setAlert({ show: false, msg: "", type: "" });
+    }, 2000);
+  };
+
+  const addEventItem = (newItem) => {
+    setEventList([...eventList, newItem]);
+  };
+
+  const handleEdit = (item) => {
+    console.log(123);
+    console.log(item);
+  };
+
+  const handleDelete = (id) => {
+    setEventList((prevList) => {
+      return prevList.filter((item, index) => index !== id);
+    });
+  };
+
+  return (
+    <React.Fragment>
+      <Header />
+      <section className="section-center">
+        <CreateArea
+          onAdd={addEventItem}
+          alert={alert}
+          setAlert={setAlert}
+          removeAlert={removeAlert}
+        />
+        <div className="event-items-container">
+          {eventList.map((item, index) => (
+            <EventItem
+              key={index}
+              id={index}
+              item={item}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              alert={alert}
+              setAlert={setAlert}
+              removeAlert={removeAlert}
+            />
+          ))}
+        </div>
+      </section>
+    </React.Fragment>
+  );
 }
+
 export default App;

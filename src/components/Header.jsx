@@ -2,8 +2,8 @@ import React from "react";
 
 function Header() {
   return (
-    <header>
-      <h1>Event Planner</h1>
+    <header className="main-header">
+      <h2 className="header__title">Plan Your Events</h2>
     </header>
   );
 }
